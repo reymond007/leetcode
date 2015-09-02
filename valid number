@@ -1,0 +1,66 @@
+public class Solution {
+    public boolean isNumber(String s) {
+        
+        if(s == null)
+        {
+            return false;
+        }
+        
+        s = s.trim();
+        if(s.length() == 0)
+        {
+            return false;
+        }
+        
+        boolean dot = false;
+        boolean exp = false;
+        boolean num = false;
+        
+        for(int i = 0; i < s.length(); i++)
+        {
+            switch(s.charAt(i))
+            {
+                case '.':
+                    if(dot || exp)
+                    {
+                        return false;
+                    }
+                    dot = true;
+                    break;
+                case '+':
+                case '-':
+                    if(i != 0 && s.charAt(i-1) != 'e' && s.charAt(i-1) != 'E' )
+                    {
+                        return false;
+                    }
+                    break;
+                case 'E':
+                case 'e':
+                    if(!num || exp)
+                    {
+                        return false;
+                    }
+                    num = false;
+                    exp = true;
+                    break;
+                
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    num = true;
+                    break;
+                default:
+                    return false;
+            }
+        }
+        
+        return num;
+    }
+}
