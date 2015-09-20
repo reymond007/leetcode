@@ -1,0 +1,80 @@
+public class Solution {
+    public int calculate(String s) {  
+        
+        if( s== null || s.length() == 0)
+        {
+            return 0;
+        }
+        
+        Stack<Integer> vStack = new Stack<Integer>();
+        Stack<Character> cStack = new Stack<Character>();
+        
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(s.charAt(i) == ' ')
+            {
+                continue;
+            }
+            
+            if(s.charAt(i) >= '0' && s.charAt(i) <= '9')
+            {
+                StringBuilder sb = new StringBuilder();
+                while( i < s.length() && s.charAt(i) >= '0' && s.charAt(i) <= '9')
+                {
+                    sb.append(s.charAt(i));
+                    i++;
+                }
+                vStack.push(Integer.parseInt(sb.toString()));
+                i--;//倒退一格让循环继续
+            }
+            
+            else if(s.charAt(i) == '+' || s.charAt(i) == '-')
+            {
+                if( !cStack.isEmpty() && cStack.peek() != '(')
+                {
+                    vStack.push( cal(cStack.pop(), vStack.pop(), vStack.pop()));
+                }
+                cStack.push(s.charAt(i));
+            }
+            else if(s.charAt(i) == '(')
+            {
+                cStack.push(s.charAt(i));
+            }
+            else// s.charAt(i) == ')'
+            {
+                while(!cStack.isEmpty() && cStack.peek() != '(')
+                {
+                    vStack.push( cal(cStack.pop(), vStack.pop(), vStack.pop()));
+                }
+                if(!cStack.isEmpty())
+                {
+                    cStack.pop();
+                }
+            }
+        }
+        
+        while(!cStack.isEmpty())
+        {
+            vStack.push( cal(cStack.pop(), vStack.pop(), vStack.pop()));
+        }
+        
+        return vStack.peek();
+    }
+    
+    public int cal(char c, int a , int b)
+    {
+        int result = 0;
+        switch(c)
+        {
+            case '+':
+                result = a + b;
+                break;
+            case '-':
+                result = b - a; 
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+}
