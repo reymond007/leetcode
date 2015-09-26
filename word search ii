@@ -1,0 +1,89 @@
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param words: A list of string
+     * @return: A list of string
+     */
+    class TrieNode
+    {
+        String end = null;
+        TrieNode[] children = new TrieNode[26];
+    }
+    class Trie
+    {
+        TrieNode root = new TrieNode();
+        
+        public void addWord(String word)
+        {
+            TrieNode cur = root;
+            int i = 0;
+            
+            while(i < word.length())
+            {
+                if(cur.children[word.charAt(i)-'a'] == null)
+                {
+                    cur.children[word.charAt(i)-'a'] = new TrieNode();
+                }
+                cur = cur.children[word.charAt(i)-'a'];
+                i++;
+            }
+            
+            cur.end = word;
+        }
+    }
+    public ArrayList<String> wordSearchII(char[][] board, ArrayList<String> words) {
+        // write your code here
+        
+        ArrayList<String> results = new ArrayList<String>();
+        
+        if(board == null || board.length == 0 || board[0].length == 0|| words == null || words.size() == 0)
+        {
+            return results;
+        }
+        
+        Trie trie = new Trie();
+        for(String str : words)
+        {
+            trie.addWord(str);
+        }
+        
+        for(int i = 0; i < board.length; i++)
+        {
+            for(int j = 0; j < board[0].length; j++)
+            {
+                TrieNode cur = trie.root;
+                boolean map[][] = new boolean[board.length][board[0].length];
+                dfs(results, board, i, j, cur, map);
+            }
+        }
+        
+        return results;
+    }
+    
+    public void dfs(ArrayList<String> results, char[][]board, int i, int j, TrieNode cur, boolean[][] map)
+    {
+        if(i<0 || i>=board.length || j<0 || j >=board[0].length ||cur.children[board[i][j]-'a'] == null || map[i][j])
+        {
+            return;
+        }
+        
+        map[i][j] = true;
+        cur = cur.children[board[i][j]-'a'];
+        
+        if(cur.end != null)
+        {
+            if(!results.contains(cur.end))
+            {
+                results.add(cur.end);
+            }
+        }
+        
+        dfs(results, board, i-1, j, cur, map);
+        dfs(results, board, i+1, j, cur, map);
+        dfs(results, board, i, j-1, cur, map);
+        dfs(results, board, i, j+1, cur, map);
+        
+        map[i][j] = false;
+        
+    }
+}
