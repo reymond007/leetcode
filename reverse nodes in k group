@@ -45,6 +45,6 @@ public class Solution {
             cur = next;  
         }  
         head.next = end;  
-        return head;  Custom Testcase  
+        return head; 
     }
 }
