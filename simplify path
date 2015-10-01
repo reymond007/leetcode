@@ -1,0 +1,54 @@
+public class Solution {
+    /**
+     * @param path the original path
+     * @return the simplified path
+     */
+    public String simplifyPath(String path) {
+        // Write your code here
+        
+        if(path == null || path.length() == 0)
+        {
+            return "";
+        }
+        
+        String[] results = path.split("/");
+        Stack<String> stack = new Stack<String>();
+        
+        for(int i = 0; i < results.length; i++)
+        {
+            if(results[i].equals(""))
+            {
+                continue;
+            }
+            if(results[i].equals("."))
+            {
+                continue;
+            }
+            else if(results[i].equals(".."))
+            {
+                if(!stack.isEmpty())
+                {
+                    stack.pop();
+                }
+            }
+            else
+            {
+                stack.push(results[i]);
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        
+        while(!stack.isEmpty())
+        {
+            sb.insert(0,stack.pop());
+            sb.insert(0,"/");
+        }
+        
+        if(sb.toString().equals(""))
+        {
+            sb.insert(0,"/");
+        }
+        return sb.toString();
+    }
+}
