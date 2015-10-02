@@ -1,0 +1,52 @@
+class IntegerComparator implements Comparator<String>
+{
+    public int compare(String s1, String s2)
+    {
+        return (s2+s1).compareTo(s1+s2);
+    }
+}
+
+public class Solution {
+    /**
+     *@param num: A list of non negative integers
+     *@return: A string
+     */
+    public String largestNumber(int[] num) {
+        // write your code here
+        a
+        if(num == null || num.length == 0)
+        {
+            return "";
+        }
+        
+        String[] strs = new String[num.length];
+        
+        for(int i = 0; i < num.length; i++)
+        {
+            strs[i] = Integer.toString(num[i]);
+        }
+        
+        Arrays.sort(strs, new IntegerComparator());
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < num.length; i++)
+        {
+            sb.append(strs[i]);
+        }
+        
+        int index = 0;
+        for(; index < sb.length(); index++)
+        {
+            if(sb.charAt(index) != '0')
+            {
+                break;
+            }
+        }
+        
+        if(index == sb.length())
+        {
+            return "0";
+        }
+        
+        return sb.toString().substring(index);
+    }
+}
